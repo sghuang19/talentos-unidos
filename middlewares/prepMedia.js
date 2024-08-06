@@ -8,7 +8,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 // prepares the tmp dir
-const TEMP_DIR = fs.mkdtempSync(tmpdir());
+const TEMP_DIR = fs.mkdtempSync(tmpdir() + "/");
 console.log("TEMP_DIR: ", TEMP_DIR);
 // max file size when fetching from Twilio
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB max
