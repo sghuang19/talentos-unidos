@@ -1,6 +1,5 @@
 import twilio from "twilio";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -24,13 +23,17 @@ class MessageSender {
   }
 
   async sendTemplateMessage(contentSid, contentVariables) {
-    await client.messages.create({
-      messagingServiceSid: serviceSid,
-      contentSid: contentSid,
-      contentVariables: JSON.stringify(contentVariables),
-      from: "whatsapp:" + twilioNumber,
-      to: "whatsapp:" + this.phoneNumber,
-    });
+    try {
+      await client.messages.create({
+        messagingServiceSid: serviceSid,
+        contentSid: contentSid,
+        contentVariables: JSON.stringify(contentVariables),
+        from: "whatsapp:" + twilioNumber,
+        to: "whatsapp:" + this.phoneNumber,
+      });
+    } catch (e) {
+      console.error("Failed to send template msg", e);
+    }
   }
 
   async sendRetryPrompt() {
@@ -39,9 +42,15 @@ class MessageSender {
     );
   }
 
-  async sendGreeting() {
-    const contentSid = "HXe9bb1ed9ac23f547b5c7801fdc451dfb";
+  /** Sends the command prompt */
+  async sendPrompt() {
+    const contentSid = "HX36ddf50f01794519de969c163d774038";
     await this.sendTemplateMessage(contentSid);
+  }
+
+  /** Sends a greeting message to start info collection */
+  async sendGreeting() {
+    await this.sendRegularMessage("Let's collect some basic information!");
   }
 
   async askFirstname() {
@@ -79,11 +88,21 @@ class MessageSender {
     await this.sendTemplateMessage(contentSid);
   }
 
+  async askResume() {
+    await this.sendRegularMessage("Please upload your CV.");
+  }
+
   async sendGoodbye() {
     await this.sendRegularMessage("Your info has been recorded, goodbye!");
   }
 }
 
+/**
+ * Creates a message sender instance that has phoneNumber of recipient specified
+ *
+ * @param phoneNumber
+ * @returns {MessageSender}
+ */
 export function createMessageSender(phoneNumber) {
   return new MessageSender(phoneNumber);
 }
