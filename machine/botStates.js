@@ -1,8 +1,17 @@
 import { updateContext } from "./botActions.js";
 
+/** @typedef {import("xstate").StateNodeConfig} StateNodeConfig */
+
+/**
+ * The definition of substates in collect parent state. For the root state,
+ * refer to rootState.
+ *
+ * @constant
+ * @type {Object<string, StateNodeConfig>}
+ */
 const botStates = {
   greeting: {
-    entry: "sendGreeting",
+    // entry: "sendGreeting", // FIXME: this greeting is displayed after firstname?
     always: "firstname",
   },
   firstname: {
