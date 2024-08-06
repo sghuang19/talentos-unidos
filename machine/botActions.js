@@ -3,16 +3,17 @@ import { assign } from "xstate";
 /** @typedef {import("xstate").ActionFunction} ActionFunction */
 
 /**
- * A factory function that creates an action function for updating a certain
- * context.
+ * A factory function that creates an action function for accepting input and
+ * updating a certain context. `event.formattedInput` is extracted and put into
+ * `context.key`. `formattedInput` is prepped by the `botGuards` functions.
  *
  * @param {string} key
  * @returns {ActionFunction}
  */
-export function updateContext(key) {
+export function acceptInput(key) {
   // input is validated and parsed in validate[fieldName]
   return assign({
-    [key]: ({ event }) => event.messageBody,
+    [key]: ({ event }) => event.formattedInput,
   });
 }
 
@@ -43,10 +44,13 @@ const messageMethods = [
   "askPermit",
   "askZipcode",
   "askRelocate",
+  "askResume",
   "sendGoodbye",
 ];
 
 /**
+ * The actions in the FSM. Functions coming from MessageSender.js
+ *
  * @constant
  * @type {Object<string, ActionFunction>}
  */
