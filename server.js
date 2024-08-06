@@ -2,12 +2,15 @@ import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
 
-import handleMessage from "./handleMessage.js";
+import handleMessage from "./middlewares/handleMessage.js";
+import prepMessage from "./middlewares/prepMessage.js";
+import prepMedia from "./middlewares/prepMedia.js";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post("/twilio", handleMessage);
+// the sequence of applying middlewares matters
+app.post("/twilio", prepMessage, prepMedia, handleMessage);
 
 const PORT = process.env.PORT || 3000;
 

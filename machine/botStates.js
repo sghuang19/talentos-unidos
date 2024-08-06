@@ -1,10 +1,11 @@
-import { updateContext } from "./botActions.js";
+import { acceptInput } from "./botActions.js";
 
 /** @typedef {import("xstate").StateNodeConfig} StateNodeConfig */
 
+// TODO: use templated actions for accepting input to improve performance
+
 /**
- * The definition of substates in collect parent state. For the root state,
- * refer to rootState.
+ * The definition of substates in collect parent state.
  *
  * @constant
  * @type {Object<string, StateNodeConfig>}
@@ -13,6 +14,7 @@ const botStates = {
   greeting: {
     // entry: "sendGreeting", // FIXME: this greeting is displayed after firstname?
     always: "firstname",
+    // always: "resume", // jump to resume for debugging
   },
   firstname: {
     entry: "askFirstname",
@@ -20,7 +22,7 @@ const botStates = {
       input: {
         guard: "validateName",
         target: "lastname",
-        actions: updateContext("firstname"),
+        actions: acceptInput("firstname"),
       },
     },
   },
@@ -30,7 +32,7 @@ const botStates = {
       input: {
         guard: "validateName",
         target: "birthdate",
-        actions: updateContext("lastname"),
+        actions: acceptInput("lastname"),
       },
     },
   },
@@ -40,7 +42,7 @@ const botStates = {
       input: {
         guard: "validateDate",
         target: "english",
-        actions: updateContext("birthdate"),
+        actions: acceptInput("birthdate"),
       },
     },
   },
@@ -50,7 +52,7 @@ const botStates = {
       input: {
         guard: "validateEnglishLevel",
         target: "permit",
-        actions: updateContext("english"),
+        actions: acceptInput("english"),
       },
     },
   },
@@ -60,7 +62,7 @@ const botStates = {
       input: {
         guard: "validateBoolean",
         target: "zipcode",
-        actions: updateContext("permit"),
+        actions: acceptInput("permit"),
       },
     },
   },
@@ -70,7 +72,7 @@ const botStates = {
       input: {
         guard: "validateZipcode",
         target: "relocate",
-        actions: updateContext("zipcode"),
+        actions: acceptInput("zipcode"),
       },
     },
   },
@@ -79,8 +81,8 @@ const botStates = {
     on: {
       input: {
         guard: "validateBoolean",
-        target: "goodbye", // TODO: include resume
-        actions: updateContext("relocate"),
+        target: "resume",
+        actions: acceptInput("relocate"),
       },
     },
   },
@@ -90,7 +92,7 @@ const botStates = {
       input: {
         guard: "validateResume",
         target: "goodbye",
-        actions: updateContext("resume"),
+        actions: acceptInput("resume"), // still needed
       },
     },
   },
