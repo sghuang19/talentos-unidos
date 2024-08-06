@@ -8,6 +8,9 @@ const twilioNumber = process.env.TWILIO_NUMBER;
 
 const client = twilio(accountSid, authToken);
 
+// TODO: use ES6 arrow function for dynamic context?
+
+/** Takes phoneNumber and construct a messageSender for future use. */
 class MessageSender {
   constructor(phoneNumber) {
     this.phoneNumber = phoneNumber;
@@ -36,6 +39,11 @@ class MessageSender {
     }
   }
 
+  /**
+   * Sends a prompt to ask users to retry. Ideal when user didn't follow the
+   * instruction given. If additional clarifications are needed, send a detailed
+   * message with {@link sendRegularMessage}.
+   */
   async sendRetryPrompt() {
     await this.sendRegularMessage(
       "Invalid input. Please try again, make sure you're following the instruction. Send exit to stop.",
