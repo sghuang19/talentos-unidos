@@ -1,4 +1,4 @@
-import { createBotActor } from "./machine/botMachine.js";
+import { createBotActor } from "../machine/botMachine.js";
 
 /** @typedef {import("xstate").Actor} Actor */
 

@@ -50,21 +50,23 @@ const prepMedia = async (req, res, next) => {
     });
 
     const fileBuffer = axioRes.data;
-    const [_, fileExtension] = mediaContentType.split("/"); // Get the file extension from the content type
-    const fileName = `${req.phoneNumber}.${fileExtension}`;
-    const filePath = path.join(TEMP_DIR, fileName);
+    // const [_, fileExtension] = mediaContentType.split("/"); // Get the file extension from the content type
+    // const fileName = `${req.phoneNumber}.${fileExtension}`;
+    // const filePath = path.join(TEMP_DIR, fileName);
 
     // save the file to disk
-    fs.writeFileSync(filePath, fileBuffer);
-    console.log(`File saved to ${filePath}`);
+    // don't save for now
+    // fs.writeFileSync(filePath, fileBuffer);
+    // console.log(`File saved to ${filePath}`);
     // TODO: fileBuffer not freed here
     // TODO: delete file from Twilio storage?
 
     // attach the file info to the request object for further processing
     req.file = {
       status: "ok",
-      path: filePath,
-      buffer: fileBuffer,
+      // path: filePath,
+      data: fileBuffer,
+      size: fileBuffer.length,
       mimetype: mediaContentType,
     };
   } catch (error) {

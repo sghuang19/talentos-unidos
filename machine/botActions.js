@@ -1,11 +1,13 @@
 import { assign } from "xstate";
+import { uploadUserProfile } from "../services/UserProfileUploader.js";
 
 /** @typedef {import("xstate").ActionFunction} ActionFunction */
 
 /**
  * A factory function that creates an action function for accepting input and
  * updating a certain context. `event.formattedInput` is extracted and put into
- * `context.key`. `formattedInput` is prepped by the `botGuards` functions.
+ * `context.profile.key`. `formattedInput` is prepped by the `botGuards`
+ * functions.
  *
  * @param {string} key
  * @returns {ActionFunction}
@@ -13,7 +15,10 @@ import { assign } from "xstate";
 export function acceptInput(key) {
   // input is validated and parsed in validate[fieldName]
   return assign({
-    [key]: ({ event }) => event.formattedInput,
+    profile: ({ context, event }) => ({
+      ...context.profile, // takes the original profile and spreads it
+      [key]: event.formattedInput, // adds the new key
+    }),
   });
 }
 
@@ -62,6 +67,10 @@ const botActions = messageMethods.reduce((actions, method) => {
 botActions.reviewInfo = ({ context }) => {
   console.log("Review the info");
   console.log(context);
+};
+
+botActions.uploadProfile = ({ context }) => {
+  uploadUserProfile(context.profile).then();
 };
 
 export default botActions;
