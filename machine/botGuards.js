@@ -1,5 +1,4 @@
 /**
- * @module botGuards
  * @file Guard functions are used to:
  *
  *   - Validate the input
@@ -87,6 +86,7 @@ const validateResume = ({ context, event }) => {
       // a good file, still need to verify its format
       // TODO: skipping format verification for now
       if (true /* file.mimetype */) {
+        delete file.status; // status shouldn't be saved to DB
         event.formattedInput = file; // this is dumb, but the file will be later accepted in acceptInput
         return true;
       }

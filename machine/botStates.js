@@ -97,7 +97,7 @@ const botStates = {
     },
   },
   goodbye: {
-    entry: ["reviewInfo", "sendGoodbye"],
+    entry: ["reviewInfo", "uploadProfile", "sendGoodbye"],
     type: "final",
   },
 };

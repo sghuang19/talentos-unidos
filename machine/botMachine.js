@@ -5,8 +5,8 @@ import botStates from "./botStates.js";
 import botActions from "./botActions.js";
 import botGuards from "./botGuards.js";
 
-import { createUserInfo } from "../UserInfo.js";
-import { createMessageSender } from "../MessageSender.js";
+import { createUserProfile } from "../models/UserProfile.js";
+import { createMessageSender } from "../services/MessageSender.js";
 
 /**
  * @typedef {import("xstate").StateMachine} StateMachine
@@ -44,7 +44,9 @@ const botMachine = setup({
  * @returns {Actor} The bot actor, unstarted
  */
 export function createBotActor(phoneNumber) {
-  const context = createUserInfo(phoneNumber);
-  context.messageSender = createMessageSender(phoneNumber);
+  const context = {
+    profile: createUserProfile(phoneNumber),
+    messageSender: createMessageSender(phoneNumber),
+  };
   return createActor(botMachine, { input: context });
 }
