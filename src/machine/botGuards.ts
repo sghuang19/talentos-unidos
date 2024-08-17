@@ -1,3 +1,13 @@
+import { MachineContext, EventObject } from "xstate";
+
+interface BotEventObject extends EventObject {
+  formattedInput?: string | number | Date;
+  messageBody: string;
+  file?: any; // FIXME: specify file object type
+}
+
+type GuardProps = { context: MachineContext; event: BotEventObject };
+
 /**
  * @file Guard functions are used to:
  *
@@ -12,7 +22,7 @@
  *   Note that `event.formattedInput` can be of any type.
  */
 
-const validateName = ({ context, event }) => {
+const validateName = ({ context, event }: GuardProps) => {
   const name = (event.formattedInput = event.messageBody.trim());
   if (name.length > 50) {
     context.messageSender.sendRegularMessage().then();
@@ -21,7 +31,7 @@ const validateName = ({ context, event }) => {
   return true;
 };
 
-const validateDate = ({ context, event }) => {
+const validateDate = ({ context, event }: GuardProps) => {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
   if (regex.test(event.messageBody.trim())) {
     event.formattedInput = new Date(event.messageBody.trim());
@@ -31,7 +41,7 @@ const validateDate = ({ context, event }) => {
   return false;
 };
 
-const validateEnglishLevel = ({ context, event }) => {
+const validateEnglishLevel = ({ context, event }: GuardProps) => {
   switch (event.messageBody) {
     case "No English":
       event.formattedInput = 0;
@@ -50,7 +60,7 @@ const validateEnglishLevel = ({ context, event }) => {
   return true;
 };
 
-const validateBoolean = ({ context, event }) => {
+const validateBoolean = ({ context, event }: GuardProps) => {
   switch (event.messageBody) {
     case "Yes":
       event.formattedInput = true;
@@ -65,7 +75,7 @@ const validateBoolean = ({ context, event }) => {
   return true;
 };
 
-const validateZipcode = ({ context, event }) => {
+const validateZipcode = ({ context, event }: GuardProps) => {
   // only the first 5 digits are needed
   const regex = /^\d{5}?$/;
   if (regex.test(event.messageBody.trim())) {
@@ -76,7 +86,7 @@ const validateZipcode = ({ context, event }) => {
   return false;
 };
 
-const validateResume = ({ context, event }) => {
+const validateResume = ({ context, event }: GuardProps) => {
   const { sendRegularMessage } = context.messageSender;
   const file = event.file;
   console.log("File to be validated:", file);

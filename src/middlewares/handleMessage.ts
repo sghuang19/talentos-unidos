@@ -1,4 +1,4 @@
-import { startSession, stopSession } from "../services/SessionManager.js";
+import { startSession, stopSession } from "../services/SessionManager";
 
 const handleMessage = (req, _) => {
   const { messageBody, phoneNumber, file } = req; // prepped by middlewares

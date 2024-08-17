@@ -1,6 +1,5 @@
 import axios from "axios";
 import fs from "fs";
-import path from "path";
 import { tmpdir } from "os";
 import "dotenv/config";
 
@@ -69,7 +68,7 @@ const prepMedia = async (req, res, next) => {
       size: fileBuffer.length,
       mimetype: mediaContentType,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     if (error.response && error.response.status === 413) {
       req.file = { status: "too-large" };
       console.warn("Error: File too large");

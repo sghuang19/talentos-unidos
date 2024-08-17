@@ -1,10 +1,4 @@
-/** @typedef {import("xstate").StateNodeConfig} StateNodeConfig */
-
-/**
- * The behaviors of the root state.
- *
- * @type StateNodeConfig
- */
+/** The behaviors of the root state. */
 const rootState = {
   on: {
     start: { target: "collect" }, // start collecting, send to child state

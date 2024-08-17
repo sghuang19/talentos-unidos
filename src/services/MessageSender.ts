@@ -12,11 +12,13 @@ const client = twilio(accountSid, authToken);
 
 /** Takes phoneNumber and construct a messageSender for future use. */
 class MessageSender {
-  constructor(phoneNumber) {
+  phoneNumber: string;
+
+  constructor(phoneNumber: string) {
     this.phoneNumber = phoneNumber;
   }
 
-  async sendRegularMessage(messageBody) {
+  async sendRegularMessage(messageBody: string) {
     await client.messages.create({
       messagingServiceSid: serviceSid,
       body: messageBody,
@@ -25,7 +27,7 @@ class MessageSender {
     });
   }
 
-  async sendTemplateMessage(contentSid, contentVariables) {
+  async sendTemplateMessage(contentSid: string, contentVariables?: object) {
     try {
       await client.messages.create({
         messagingServiceSid: serviceSid,
@@ -105,12 +107,7 @@ class MessageSender {
   }
 }
 
-/**
- * Creates a message sender instance that has phoneNumber of recipient specified
- *
- * @param phoneNumber
- * @returns {MessageSender}
- */
-export function createMessageSender(phoneNumber) {
+/** Creates a message sender instance that has phoneNumber of recipient specified */
+export function createMessageSender(phoneNumber: string) {
   return new MessageSender(phoneNumber);
 }

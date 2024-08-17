@@ -1,13 +1,10 @@
-import { connect } from "../db/mongo.js";
+import { connect } from "../db/mongo";
 
 const collectionName = "profiles";
 const db = await connect();
 const collection = db.collection(collectionName);
 
-/**
- * @param userProfile Defined in botMachine, botActions
- * @returns {Promise<void>}
- */
+/** @param userProfile Defined in botMachine, botActions */
 export const uploadUserProfile = async (userProfile) => {
   try {
     const result = await collection.insertOne(userProfile);

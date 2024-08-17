@@ -1,15 +1,8 @@
-import { acceptInput } from "./botActions.js";
-
-/** @typedef {import("xstate").StateNodeConfig} StateNodeConfig */
+import { acceptInput } from "./botActions";
 
 // TODO: use templated actions for accepting input to improve performance
 
-/**
- * The definition of substates in collect parent state.
- *
- * @constant
- * @type {Object<string, StateNodeConfig>}
- */
+/** The definition of substates in collect parent state. */
 const botStates = {
   greeting: {
     // entry: "sendGreeting", // FIXME: this greeting is displayed after firstname?

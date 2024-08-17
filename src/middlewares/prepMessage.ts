@@ -1,5 +1,6 @@
+import { RequestHandler } from "express";
 /** Prepares the Twilio web hook request with messageBody and phoneNumber */
-const prepMessage = (req, res, next) => {
+const prepMessage: RequestHandler = (req, res, next) => {
   try {
     req.messageBody = req.body.Body;
     req.phoneNumber = req.body.From.slice("whatsapp:".length); // remove prefix
