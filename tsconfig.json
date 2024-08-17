@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "CommonJS",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "moduleResolution": "node"
+  },
+  "tsc-alias": {
+    "resolveFullPaths": true
+  },
+  "include": ["./src", "./test/**/*.{js,ts}"],
+  "$schema": "https://json.schemastore.org/tsconfig"
+}
